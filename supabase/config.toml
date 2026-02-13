@@ -1,1 +1,13 @@
 project_id = "nznwpheryrkdktzbcdkb"
+
+[functions.api-appointments]
+verify_jwt = false
+
+[functions.api-clients]
+verify_jwt = false
+
+[functions.api-services]
+verify_jwt = false
+
+[functions.api-barbers]
+verify_jwt = false
