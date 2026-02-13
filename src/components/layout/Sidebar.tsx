@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Calendar,
@@ -11,6 +11,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -27,6 +28,13 @@ const bottomNavigation = [
 
 export function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/login");
+  };
 
   return (
     <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-sidebar border-r border-sidebar-border flex flex-col">
@@ -79,7 +87,10 @@ export function Sidebar() {
             </Link>
           );
         })}
-        <button className="sidebar-item w-full text-destructive hover:text-destructive hover:bg-destructive/10">
+        <button
+          onClick={handleSignOut}
+          className="sidebar-item w-full text-destructive hover:text-destructive hover:bg-destructive/10"
+        >
           <LogOut className="w-5 h-5" />
           <span>Sair</span>
         </button>
@@ -93,10 +104,10 @@ export function Sidebar() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-sidebar-foreground truncate">
-              Admin
+              {user?.user_metadata?.full_name || "Usuário"}
             </p>
             <p className="text-xs text-sidebar-foreground/60 truncate">
-              admin@barbearia.com
+              {user?.email || ""}
             </p>
           </div>
         </div>
